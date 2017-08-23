@@ -60,17 +60,29 @@ namespace AutoConstructorTest.Tests
             }
             else
             {
-                if (parameter.ParameterType.IsGenericType)
-                {
-                    defaultValue = "cheese";
-                }
-                else
-                {
-                    defaultValue = "new Mock<" + parameter.ParameterType.FullName + ">().Object";
-                }
+                defaultValue = "new Mock<" + GenerateTypeName(parameter.ParameterType) + ">().Object";
             }
 
             return defaultValue;
+        }
+
+        public static string GenerateConstructorParameterList(IEnumerable<ParameterInfo> parameters)
+        {
+            return String.Join(", ", parameters.Select(p => p.Name));
+        }
+
+        public static string GenerateTypeName(Type t)
+        {
+            if (t.IsGenericType)
+            {
+                string name = t.FullName.Substring(0, t.FullName.IndexOf('`'));
+
+                return name + "<" + String.Join(", ", t.GetGenericArguments().Select(a => GenerateTypeName(a))) + ">";
+            }
+            else
+            {
+                return t.FullName;
+            }
         }
     }
 

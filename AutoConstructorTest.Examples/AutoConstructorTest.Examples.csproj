@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExcludedClass.cs" />
+    <Compile Include="GenericClass.cs" />
     <Compile Include="ValidClass1.cs" />
     <Compile Include="ValidClass2.cs" />
     <Compile Include="InternalClass.cs" />
