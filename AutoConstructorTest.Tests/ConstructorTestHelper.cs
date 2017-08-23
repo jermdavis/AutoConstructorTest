@@ -68,20 +68,30 @@ namespace AutoConstructorTest.Tests
 
         public static string GenerateConstructorParameterList(IEnumerable<ParameterInfo> parameters)
         {
+            if(parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
             return String.Join(", ", parameters.Select(p => p.Name));
         }
 
-        public static string GenerateTypeName(Type t)
+        public static string GenerateTypeName(Type type)
         {
-            if (t.IsGenericType)
+            if (type == null)
             {
-                string name = t.FullName.Substring(0, t.FullName.IndexOf('`'));
+                throw new ArgumentNullException(nameof(type));
+            }
 
-                return name + "<" + String.Join(", ", t.GetGenericArguments().Select(a => GenerateTypeName(a))) + ">";
+            if (type.IsGenericType)
+            {
+                string name = type.FullName.Substring(0, type.FullName.IndexOf('`'));
+
+                return name + "<" + String.Join(", ", type.GetGenericArguments().Select(a => GenerateTypeName(a))) + ">";
             }
             else
             {
-                return t.FullName;
+                return type.FullName;
             }
         }
     }
